@@ -1,0 +1,34 @@
+{
+  "name": "corteza-pruebas-node",
+  "version": "1.0.0",
+  "description": "Pruebas unitarias (Jest) y BDD (Cucumber-JS) de Corteza ERP: proveedores, cotizaciones, órdenes de compra e inventario",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:bdd": "cucumber-js",
+    "reporte": "jest --json --outputFile=reportes/jest.json && cucumber-js --format json:reportes/cucumber.json && node generarReporte.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/repositoriosMemoria.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 80
+      }
+    }
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "jest": "^30.0.0"
+  }
+}

@@ -1,0 +1,72 @@
+name: Pruebas Corteza ERP
+
+on:
+  push:
+    branches: [main, "pruebas-*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  node:
+    name: Jest + Cucumber-JS (Node.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pruebas/node
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx jest --coverage
+      - run: npx cucumber-js
+      - run: npm run reporte
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reportes-node
+          path: |
+            pruebas/node/coverage
+            pruebas/node/reportes
+
+  java:
+    name: JUnit 5 + Cucumber-JVM (Java)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pruebas/java
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - run: mvn -B test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reportes-java
+          path: |
+            pruebas/java/target/surefire-reports
+            pruebas/java/target/cucumber.html
+
+  dotnet:
+    name: xUnit + Reqnroll (.NET 8)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pruebas/dotnet
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet test Corteza.Pruebas.Unitarias --logger "console;verbosity=normal" --logger trx --collect:"XPlat Code Coverage"
+      - run: dotnet test Corteza.Pruebas.Bdd --logger "console;verbosity=normal" --logger trx
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reportes-dotnet
+          path: pruebas/dotnet/**/TestResults
