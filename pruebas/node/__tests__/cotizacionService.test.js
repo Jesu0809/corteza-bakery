@@ -3,10 +3,10 @@ const CotizacionService = require('../src/cotizacionService');
 
 describe('CotizacionService · cálculo del total', () => {
   it.each([
-    [[{ cantidad: 20, precioUnitario: 92_500 }], 1_850_000],
-    [[{ cantidad: 60, precioUnitario: 4_200 }, { cantidad: 8, precioUnitario: 185_000 }], 1_732_000],
-    [[{ cantidad: 1, precioUnitario: 1 }], 1],
-  ])('debería calcular el total de %j como %d', (items, esperado) => {
+    ['20 bultos de harina a $92.500', [{ cantidad: 20, precioUnitario: 92_500 }], 1_850_000],
+    ['60 bolsas de leche y 8 cajas de mantequilla', [{ cantidad: 60, precioUnitario: 4_200 }, { cantidad: 8, precioUnitario: 185_000 }], 1_732_000],
+    ['1 unidad a $1 (valor mínimo)', [{ cantidad: 1, precioUnitario: 1 }], 1],
+  ])('debería calcular el total de %s ($%d)', (_descripcion, items, esperado) => {
     expect(CotizacionService.calcularTotal(items)).toBe(esperado);
   });
 
