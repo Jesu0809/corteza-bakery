@@ -47,7 +47,7 @@ const html = `<!doctype html>
  h1{color:#681f33;margin:0 0 4px} p{margin:0 0 16px;color:#544245}
  table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden}
  th{background:#681f33;color:#fff;text-align:left;padding:10px} td{padding:9px 10px;border-bottom:1px solid #eadfd9}
- .chip{font-weight:600} i{width:20px;text-align:center}
+ .chip{font-weight:600;white-space:nowrap} i{width:20px;text-align:center} h1 i{margin-right:12px}
 </style></head><body>
 <h1><i class="fa-solid fa-flask-vial"></i> Reporte de pruebas · Corteza ERP</h1>
 <p>${aprobadas} de ${total} pruebas aprobadas · generado el ${new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</p>
